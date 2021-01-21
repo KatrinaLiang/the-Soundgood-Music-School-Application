@@ -1,18 +1,18 @@
 /* Show the number of instruments rented per month during a specified year.*/
-CREATE VIEW RentalsPerMonth AS
+CREATE VIEW rentals_per_month AS
 SELECT EXTRACT(MONTH FROM rent_date) AS month, COUNT(EXTRACT(MONTH FROM rent_date)) AS nr_of_instruments_rented
 FROM instrument_rental
 WHERE EXTRACT(YEAR FROM rent_date)='2020'
 GROUP BY EXTRACT(MONTH FROM rent_date);
 
 /*total number of rented instruments (just one number) */
-CREATE VIEW Tot_Rentals AS
+CREATE VIEW tot_rentals AS
 SELECT COUNT(*) AS tot_rental
 FROM instrument_rental
 WHERE EXTRACT(YEAR FROM rent_date)='2020';
 
 /*rented instruments of each kind
-CREATE VIEW Rentals_By_Type AS
+CREATE VIEW rentals_by_type AS
 SELECT type AS "Type of instrument",
 COUNT(*) AS "No of rentals"
 FROM instrument
@@ -23,45 +23,49 @@ GROUP BY instrument_rental.instrument_id, type
 ORDER BY "No of rentals";
 
 /* the average number of rentals per month during the entire year */
-CREATE VIEW AvgRentalsPerMonth AS
+CREATE VIEW avg_rentals_per_month AS
 SELECT COUNT(*)/12::float AS "Avg no of rentals per month"
 FROM instrument_rental
 WHERE EXTRACT(YEAR FROM rent_date)='2020';
 
 /* Show the number of lessons given per month during a specified year. */
-CREATE VIEW LessonsPerMonth AS
+CREATE VIEW lessons_per_month AS
 SELECT EXTRACT (MONTH FROM start_time) AS month, COUNT (EXTRACT (MONTH FROM start_time)) AS "Number of lessons"
 FROM lesson
 WHERE EXTRACT (YEAR FROM start_time)='2020'
 GROUP BY EXTRACT(MONTH FROM start_time);
 
-CREATE VIEW Tot_Lessons AS
+/* Show the number of lessons. */
+CREATE VIEW tot_lessons AS
 SELECT (SELECT COUNT(*) AS "Total no of lessons" FROM group_lesson)
 +
 (SELECT COUNT(*) AS "Total no of lessons" FROM individual_lesson)
 AS "Tot number of lessons";
 
-CREATE VIEW Tot_Group_Lessons AS
+/* Show the number of group lessons. */
+CREATE VIEW tot_group_lessons AS
 SELECT COUNT(*) AS "Total no of group lessons"
 FROM group_lesson;
 
-CREATE VIEW Tot_Ensembles AS
+/* Show the number of ensembles. */
+CREATE VIEW tot_ensembles AS
 SELECT COUNT(*) AS "Total no of ensembles"
 FROM ensemble;
 
-CREATE VIEW Tot_Individual_Lessons AS
+/* Show the number of individual lessons. */
+CREATE VIEW tot_individual_lessons AS
 SELECT COUNT(*) AS "Total no of individual lessons"
 FROM individual_lesson;
 
 /*the average number of lessons per month during the entire year*/
-CREATE VIEW Avg_Lessons_Per_Month AS
+CREATE VIEW avg_lessons_per_month AS
 SELECT COUNT(*)/12::float AS "Avg no of lessons per month"
 FROM group_lesson, individual_lesson
 WHERE EXTRACT(YEAR FROM group_lesson.start_time)='2020'
 AND EXTRACT(YEAR FROM individual_lesson.start_time)='2020';
 
 --- List all instructors who has given more than a specific number of lessons during the current month
-CREATE VIEW Instructor_Lessons AS
+CREATE VIEW instructor_lessons AS
 SELECT
 person.first_name AS "First name",
 person.last_name AS "Last name",
@@ -86,7 +90,7 @@ HAVING COUNT(*) > 1 --- more than 1 lessons
 ORDER BY "Number of lessons during the current month" DESC;
 
 -- the three instructors having given most lessons (independent of lesson type) during the last month
-CREATE MATERIALIZED VIEW Instructors_With_Most_Lessons AS
+CREATE MATERIALIZED VIEW instructors_with_most_lessons AS
 SELECT
 person.first_name AS "First name",
 person.last_name AS "Last name",
@@ -112,7 +116,7 @@ ORDER BY "Number of lessons during the last month" DESC
 limit 3;
 
 --- show nr of lessons for next week
-CREATE VIEW NrLessonsNextWeek AS
+CREATE VIEW nr_lessons_next_week AS
 SELECT COUNT(*)
 FROM
 (SELECT start_time FROM individual_lesson
@@ -121,7 +125,7 @@ WHERE(l.start_time >= date_trunc('week', CURRENT_TIMESTAMP + interval '1 week')
 AND l.start_time < date_trunc('week', CURRENT_TIMESTAMP + interval '2 week'));
 
 ---List all ensembles held during the next week, sorted by music genre and weekday.
-CREATE VIEW List_Ensembles_Next_Week AS
+CREATE VIEW list_ensembles_next_week AS
 SELECT
 group_lesson.group_lesson_id AS "lesson ID",
 ensemble.genre AS "genre",
