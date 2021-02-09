@@ -1,5 +1,6 @@
 # ProjectIV1351
-The Soundgood Music School Application   
+Project in IV1351 Data Storage Paradigms: The Soundgood Music School Application   
+
 The course introduces the area of databases/data storage. The following subjects ar covered:  
 
 Introduction to databases, data storage and information administration   
