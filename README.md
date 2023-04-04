@@ -1,9 +1,10 @@
-# ProjectIV1351
-Project in IV1351 Data Storage Paradigms: The Soundgood Music School Application   
+# The Soundgood Music School Application 
 
-The course introduces the area of databases/data storage. The following subjects ar covered:  
+The purpose of this project is to facilitate information handling and business transactions for the Soundgood music school company, by developing an application which handles all the school's data and all its transactions. Tools used in this project includes: **Docker, SQL, Java**.
 
-Introduction to databases, data storage and information administration   
+
+This project is a part of the course IV1351 Data Storage Paradigms, which introduces the area of databases/data storage. The following subjects ar covered:  
+- Introduction to databases, data storage and information administration   
 - The relational model   
 - Conceptual modeling and Logical database design   
 - Query languages   
